@@ -1,0 +1,58 @@
+import random
+import time
+import numpy as np
+
+def partition5(arr, left, right):
+    i = left + 1
+    while i <= right:
+        j = i
+        while j > left and arr[j-1] > arr[j]:
+            arr[j-1], arr[j] = arr[j], arr[j-1]
+            j -= 1
+        i += 1
+    return (left + right) // 2
+
+def median_of_medians(arr, left, right):
+    if right - left < 5:
+        return partition5(arr, left, right)
+    sub_right = left + 4
+    for i in range(left, right, 5):
+        sub_right = min(i + 4, right)
+        median5 = partition5(arr, i, sub_right)
+        arr[median5], arr[left + (i - left) // 5] = arr[left + (i - left) // 5], arr[median5]
+    mid = (right - left) // 10 + left + 1
+    return median_of_medians(arr, left, left + (sub_right - left) // 5)
+
+def partition(arr, left, right, pivot_index):
+    pivot_value = arr[pivot_index]
+    arr[pivot_index], arr[right] = arr[right], arr[pivot_index]  # Corrected line
+    store_index = left
+    for i in range(left, right):
+        if arr[i] < pivot_value:
+            arr[i], arr[store_index] = arr[store_index], arr[i]
+            store_index += 1
+    arr[right], arr[store_index] = arr[store_index], arr[right]
+    return store_index
+
+def quickselect(arr, left, right, k):
+    if left == right:
+        return arr[left]
+    pivot_index = median_of_medians(arr, left, right)
+    pivot_index = partition(arr, left, right, pivot_index)
+    if k == pivot_index:
+        return arr[k]
+    elif k < pivot_index:
+        return quickselect(arr, left, pivot_index - 1, k)
+    else:
+        return quickselect(arr, pivot_index + 1, right, k)
+
+# Taking input from user
+arr = list(map(int, input("Enter the elements of the array separated by spaces: ").split()))
+k = int(input(f"Enter the value of k (1 <= k <= {len(arr)}): "))
+
+# Find the kth smallest element
+if 1 <= k <= len(arr):
+    result = quickselect(arr, 0, len(arr) - 1, k - 1)  # k-1 because index starts from 0
+    print(f"The {k}th smallest element is: {result}")
+else:
+    print(f"Invalid input! k should be between 1 and {len(arr)}.")
