@@ -25,7 +25,7 @@ def median_of_medians(arr, left, right):
 
 def partition(arr, left, right, pivot_index):
     pivot_value = arr[pivot_index]
-    arr[pivot_index], arr[right] = arr[right], arr[pivot_index]  # Corrected line
+    arr[pivot_index], arr[right] = arr[right], arr[pivot_index] 
     store_index = left
     for i in range(left, right):
         if arr[i] < pivot_value:
@@ -46,13 +46,13 @@ def quickselect(arr, left, right, k):
     else:
         return quickselect(arr, pivot_index + 1, right, k)
 
-# Taking input from user
+
 arr = list(map(int, input("Enter the elements of the array separated by spaces: ").split()))
 k = int(input(f"Enter the value of k (1 <= k <= {len(arr)}): "))
 
-# Find the kth smallest element
+
 if 1 <= k <= len(arr):
-    result = quickselect(arr, 0, len(arr) - 1, k - 1)  # k-1 because index starts from 0
+    result = quickselect(arr, 0, len(arr) - 1, k - 1) 
     print(f"The {k}th smallest element is: {result}")
 else:
     print(f"Invalid input! k should be between 1 and {len(arr)}.")
