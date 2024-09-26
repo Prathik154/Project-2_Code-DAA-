@@ -25,7 +25,7 @@ def median_of_medians(arr, left, right):
 
 def partition(arr, left, right, pivot_index):
     pivot_value = arr[pivot_index]
-    arr[pivot_index], arr[right] = arr[right], arr[pivot_index]  # Corrected line
+    arr[pivot_index], arr[right] = arr[right], arr[pivot_index]  
     store_index = left
     for i in range(left, right):
         if arr[i] < pivot_value:
@@ -46,28 +46,19 @@ def quickselect(arr, left, right, k):
     else:
         return quickselect(arr, pivot_index + 1, right, k)
 
-# Take input for sizes from user
+
 sizes_input = input("Enter the sizes separated by spaces (e.g., 100 1000 10000 100000 1000000): ")
-sizes = list(map(int, sizes_input.split()))  # Convert input string to list of integers
+sizes = list(map(int, sizes_input.split()))  
 times = []
 
 for size in sizes:
     random_list = [random.randint(1, 10000) for _ in range(size)]
     start_time = time.time()
-    quickselect(random_list.copy(), 0, size - 1, size // 2)  # Finding the median
+    quickselect(random_list.copy(), 0, size - 1, size // 2) 
     end_time = time.time()
-    times.append((end_time - start_time) * 1000000000)  # Convert to milliseconds
+    times.append((end_time - start_time) * 1000000000)  
 
-# Output the results
+
 for size, duration in zip(sizes, times):
     print(f"Time taken for size {size}: {duration:.4f} ms")
 
-import matplotlib.pyplot as plt
-plt.figure(figsize=(10, 5))
-plt.plot(sizes, times, label='Experimental Time', marker='o')
-plt.xlabel('Array Size (n)')
-plt.ylabel('Time (milliseconds)')
-plt.title('Quick Select Algorithm Performance')
-plt.legend()
-plt.grid(True)
-plt.show()
